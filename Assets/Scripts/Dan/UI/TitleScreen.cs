@@ -17,6 +17,8 @@ namespace Dan.UI
         
         private IEnumerator WaitToStartPlay()
         {
+            yield return new WaitForSeconds(0.5f);
+            
             while (true)
             {
                 if (Input.GetKeyDown(KeyCode.Space))

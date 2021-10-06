@@ -22,6 +22,8 @@ namespace Dan.Manager
         private ScoreText scoreText;
         [SerializeField]
         private HealthSlider healthSlider;
+        [SerializeField]
+        private LevelIndicator levelIndicator;
 
         public static event Action OnGameStart;
         public static event Action OnGameEnd;
@@ -29,12 +31,20 @@ namespace Dan.Manager
         private IEnumerable<IInputHandler> _inputHandlers;
         private bool _isPause;
         private bool _gameStarted;
-        private int playerScore;
+        private int _playerScore;
+        private int _currentLevel = 1;
 
+        public static int CurrentLevel => _instance._currentLevel;
+        
         public static void AddScore(int score)
         {
             _instance.scoreText.Score += score;
-            _instance.playerScore = _instance.scoreText.Score;
+            _instance._playerScore = _instance.scoreText.Score;
+        }
+        
+        public static void ReturnToTitle()
+        {
+            _instance.ResetGame();
         }
 
         private void SetupEvents()
@@ -55,10 +65,7 @@ namespace Dan.Manager
                 inputHandler.Pause -= TogglePause;
         }
 
-        private void Start()
-        {
-            titleScreen.StartNewGame();
-        }
+        private void Start() => titleScreen.StartNewGame();
 
         private void Awake()
         {
@@ -84,7 +91,6 @@ namespace Dan.Manager
                 return;
             
             _isPause = !_isPause;
-            
             pauseScreen.Pause(_isPause);
         }
 
@@ -93,6 +99,7 @@ namespace Dan.Manager
         private void StartGame()
         {
             titleScreen.Hide();
+            levelIndicator.Show($"Level {_currentLevel}");
             hudScreen.Show(0.2f, ()=>
             {
                 OnGameStart?.Invoke();
@@ -109,8 +116,20 @@ namespace Dan.Manager
         {
             _gameStarted = false;
             hudScreen.Hide();
-            pauseScreen.EndGame(playerScore);
+            pauseScreen.EndGame(_playerScore);
             OnGameEnd?.Invoke();
+        }
+
+        private void ResetGame()
+        {
+            _gameStarted = false;
+            _currentLevel = 1;
+            player.ResetGame();
+            hudScreen.Hide();
+            titleScreen.Show();
+            pauseScreen.Hide();
+            
+            titleScreen.StartNewGame();
         }
     }
 }

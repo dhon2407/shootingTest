@@ -13,6 +13,8 @@ namespace Dan.UI
         [SerializeField]
         private CanvasGroup newRecordCG;
         [SerializeField]
+        private CanvasGroup continueNotice;
+        [SerializeField]
         private Text currentScore;
         [SerializeField]
         private Text topScore;
@@ -22,16 +24,28 @@ namespace Dan.UI
             transform.localScale = Vector3.zero;
         }
         
-        private void Awake()
+        private void Awake() => ResetState();
+
+        public void ResetState()
         {
+            continueNotice.DOKill(true);
+            newRecordCG.DOKill(true);
+            
             newRecordCG.alpha = 0;
             topScoreCG.alpha = 0;
+            continueNotice.alpha = 0;
+            transform.localScale = Vector3.zero;
         }
 
         public void Show(int playerScore)
         {
             transform.DOScale(Vector3.one, 0.3f)
                 .OnComplete(() => CalculateScore(playerScore));
+        }
+
+        public void ShowContinueNotice()
+        {
+            continueNotice.DOFade(1, 0.5f).SetLoops(-1, LoopType.Yoyo);
         }
 
         private void CalculateScore(int playerScore)

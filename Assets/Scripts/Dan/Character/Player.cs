@@ -25,11 +25,14 @@ namespace Dan.Character
         
         public bool IsDead { get; private set; }
 
-
+        public void ResetGame()
+        {
+            InitializeParameters();
+        }
+        
         private void Awake()
         {
-            InitializePlayerController();
-            InitializeWeapon();
+            InitializeComponents();
             InitializeParameters();
 
             GameFlowManager.OnGameStart += GameStart;
@@ -38,21 +41,21 @@ namespace Dan.Character
         private void InitializeParameters()
         {
             _currentHitPoints = hitPoints;
-            _hitBox = GetComponentInChildren<HitBox>();
-            if (_hitBox != null)
-                _hitBox.OnHit += Hit;
+            transform.position = Vector3.zero;
+            IsDead = false;
+            _characterController.Activate(false);
         }
 
-        private void InitializeWeapon()
-        {
-            _weapon = GetComponentInChildren<IWeapon>();
-        }
-
-        private void InitializePlayerController()
+        private void InitializeComponents()
         {
             _characterController = gameObject.AddComponent<PlayerController>();
             _characterController.SetMovespeed(initialMovementSpeed);
             _characterController.OnFireWeapon += FireWeapon;
+            
+            _weapon = GetComponentInChildren<IWeapon>();
+            _hitBox = GetComponentInChildren<HitBox>();
+            if (_hitBox != null)
+                _hitBox.OnHit += Hit;
         }
 
         private void FireWeapon() => _weapon?.Fire(transform.up);

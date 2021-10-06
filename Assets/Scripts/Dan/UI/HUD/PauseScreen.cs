@@ -1,4 +1,6 @@
-﻿using Dan.UI.Core;
+﻿using System.Collections;
+using Dan.Manager;
+using Dan.UI.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,8 +29,26 @@ namespace Dan.UI.HUD
 
         public void EndGame(int playerScore)
         {
+            scoreSummary.ResetState();
             message.text = "Game over";
-            Show(0.2f, () => scoreSummary.Show(playerScore));
+            Show(0.2f, () =>
+            {
+                scoreSummary.Show(playerScore);
+                StartCoroutine(WaitForRestartInput());
+            });
+            
+        }
+
+        private IEnumerator WaitForRestartInput()
+        {
+            yield return new WaitForSeconds(1f);
+            
+            scoreSummary.ShowContinueNotice();
+            
+            while (!Input.anyKeyDown)
+                yield return null;
+
+            GameFlowManager.ReturnToTitle();
         }
 
         protected override void Awake()
