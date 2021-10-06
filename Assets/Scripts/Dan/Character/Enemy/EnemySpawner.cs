@@ -76,11 +76,13 @@ namespace Dan.Character.Enemy
         {
             _enemyPool = GameObjectPool<BaseEnemy>.CreateInstance(enemyPrefabList, poolCount, FreeObjectPool.Transform);
             GameFlowManager.OnGameStart += StartSpawning;
+            GameFlowManager.OnGameEnd += GameEnds;
         }
 
         private void OnDestroy()
         {
             GameFlowManager.OnGameStart -= StartSpawning;
+            GameFlowManager.OnGameEnd -= GameEnds;
         }
 
         private void StartSpawning()
@@ -97,6 +99,11 @@ namespace Dan.Character.Enemy
                 Spawn();
                 yield return new WaitForSeconds(Random.Range(1f, 3f));
             }
+        }
+        
+        private void GameEnds()
+        {
+            _gameStarted = false;
         }
 
         private void OnDrawGizmos()

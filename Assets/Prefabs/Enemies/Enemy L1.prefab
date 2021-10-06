@@ -214,7 +214,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: -2529778996967499014, guid: c08fb2295b727dd45a414562931824e6, type: 3}
   projectilePoolCount: 20
   weaponRange: 30
-  fireSpeed: 1
+  fireSpeed: 0.7
 --- !u!1 &8205035551131575323
 GameObject:
   m_ObjectHideFlags: 0

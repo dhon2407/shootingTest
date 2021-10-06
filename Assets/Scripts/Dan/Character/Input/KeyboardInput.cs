@@ -6,6 +6,7 @@ namespace Dan.Character.Input
     public class KeyboardInput : MonoBehaviour, IInputHandler
     {
         public event Action Fire;
+        public event Action Pause;
         public Vector3 MoveVector => _currentMovement;
 
         private Vector3 _currentMovement;
@@ -17,6 +18,8 @@ namespace Dan.Character.Input
             
             if (UnityEngine.Input.GetKey(KeyCode.Z))
                 Fire?.Invoke();
+            if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
+                Pause?.Invoke();
         }
     }
 }

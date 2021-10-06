@@ -15,7 +15,7 @@ namespace Dan.UI.Core
         public void Show(float fadeTime = 0, Action actionOnShow = null)
         {
             _canvasGroup.DOFade(1, fadeTime)
-                .OnComplete(() => actionOnShow?.Invoke());
+                .OnComplete(() => actionOnShow?.Invoke()).SetUpdate(true);
             _canvasGroup.blocksRaycasts = false;
             _canvasGroup.interactable = false;
         }
@@ -23,13 +23,13 @@ namespace Dan.UI.Core
         public void Hide(float fadeTime = 0, Action actionOnHide = null)
         {
             _canvasGroup.DOFade(0, fadeTime)
-                .OnComplete(() => actionOnHide?.Invoke());
+                .OnComplete(() => actionOnHide?.Invoke()).SetUpdate(true);
             _canvasGroup.blocksRaycasts = false;
             _canvasGroup.interactable = false;
         }
         
 
-        private void Awake()
+        protected virtual void Awake()
         {
             _canvasGroup = GetComponent<CanvasGroup>();
             if (hideOnStart)

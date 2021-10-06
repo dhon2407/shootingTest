@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Dan.Manager;
 using Dan.Weapon;
 using DG.Tweening;
 using UnityEngine;
@@ -21,6 +22,7 @@ namespace Dan.Character.Enemy
         public override void Initialize()
         {
             _weapon = GetComponentInChildren<IWeapon>();
+            GameFlowManager.OnGameEnd += GameEnds;
         }
 
         public override void SetPlayer(Player player)
@@ -50,6 +52,7 @@ namespace Dan.Character.Enemy
         {
             transform.DOKill();
             IsDead = true;
+            GameFlowManager.AddScore(enemyKillScore);
             gameObject.SetActive(false);
         }
 
@@ -57,7 +60,7 @@ namespace Dan.Character.Enemy
         {
             while (gameObject.activeSelf)
             {
-                transform.position = transform.position + _targetDirection * moveSpeed * Time.deltaTime;
+                transform.position += _targetDirection * moveSpeed * Time.deltaTime;
                 yield return null;
             }
         }
@@ -68,7 +71,7 @@ namespace Dan.Character.Enemy
                 yield break;
             
             _weapon.ResetWeapon();
-            while (gameObject.activeSelf)
+            while (gameObject.activeSelf && _player != null)
             {
                 _weapon.Fire(transform.forward); 
                 yield return null;
@@ -112,6 +115,11 @@ namespace Dan.Character.Enemy
             transform.localPosition = Vector3.zero;
             IsDead = false;
             CurrentHitPoints = hitPoints;
+        }
+        
+        private void GameEnds()
+        {
+            _player = null;
         }
     }
 }

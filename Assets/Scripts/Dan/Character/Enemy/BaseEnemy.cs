@@ -11,6 +11,8 @@ namespace Dan.Character.Enemy
         private float timeToRemove = 2f;
         [SerializeField]
         protected float hitPoints = 5;
+        [SerializeField]
+        protected int enemyKillScore = 10;
 
         public bool IsDead { get; protected set; }
         
