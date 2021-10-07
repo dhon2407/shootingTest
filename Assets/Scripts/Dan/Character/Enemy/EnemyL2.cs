@@ -9,28 +9,10 @@ namespace Dan.Character.Enemy
     {
         [SerializeField]
         private Transform model;
-        [SerializeField]
-        private float initialForwardMovementDistance = 5;
-        
-        private Vector3 _moveDirection;
+
         private IWeapon _weapon;
         private bool _fireMode;
 
-        public override void StartMoving()
-        {
-            IsDead = false;
-            OutOfCamera = false;
-            
-            transform.DOMove(transform.position + _moveDirection * initialForwardMovementDistance, 1.5f)
-                .SetEase(Ease.OutSine)
-                .OnComplete(StartFighting);
-        }
-        
-        public override void SetMoveDirection(Vector3 direction)
-        {
-            _moveDirection = direction;
-        }
-        
         protected override void Initialize()
         {
             base.Initialize();
@@ -55,7 +37,7 @@ namespace Dan.Character.Enemy
             base.Die();
         }
 
-        private void StartFighting()
+        protected override void StartFighting()
         {
             if (IsDead || OutOfCamera)
                 return;
@@ -84,10 +66,10 @@ namespace Dan.Character.Enemy
 
         private IEnumerator ContinueMoving()
         {
-            transform.DOLookAt(_moveDirection, 0.2f);
+            transform.DOLookAt(MoveDirection, 0.2f);
             while (gameObject.activeSelf && !_fireMode)
             {
-                transform.position += _moveDirection * MoveSpeed * Time.deltaTime;
+                transform.position += MoveDirection * MoveSpeed * Time.deltaTime;
                 yield return null;
             }
         }

@@ -99,7 +99,7 @@ namespace Dan.Manager
         private void StartGame()
         {
             titleScreen.Hide();
-            levelIndicator.Show($"Level {_currentLevel}");
+            levelIndicator.Show(_currentLevel);
             hudScreen.Show(0.2f, ()=>
             {
                 OnGameStart?.Invoke();
@@ -132,7 +132,7 @@ namespace Dan.Manager
             if (newLevel > _currentLevel)
             {
                 _currentLevel = newLevel;
-                levelIndicator.Show($"Level {_currentLevel}");
+                levelIndicator.Show(_currentLevel);
                 OnLevelChange?.Invoke(_currentLevel);
             }
         }

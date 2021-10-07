@@ -18,6 +18,8 @@ namespace Dan.UI
         private Text currentScore;
         [SerializeField]
         private Text topScore;
+        [SerializeField]
+        private AudioSource countAudio;
 
         public void Hide()
         {
@@ -57,6 +59,7 @@ namespace Dan.UI
 
             var isNewRecord = currentHighScore > lastHighScore;
 
+            countAudio.Play();
             DOTween.To(() => 0, value => currentScore.text = $"Score : {value:00000000}", currentHighScore, 1f)
                 .OnComplete(() =>
                 {
@@ -68,6 +71,8 @@ namespace Dan.UI
                         newRecordCG.DOFade(1, 0.5f).SetLoops(-1, LoopType.Yoyo);
                         PlayerPrefs.SetInt(HighScoreCodeKey, currentHighScore);
                     }
+                    
+                    countAudio.Stop();
                 });
         }
     }

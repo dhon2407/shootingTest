@@ -3,6 +3,7 @@ using System.Collections;
 using Dan.Character.Collision;
 using Dan.Helper.Utils;
 using Dan.Manager;
+using DG.Tweening;
 using UnityEngine;
 
 namespace Dan.Character.Enemy
@@ -19,27 +20,42 @@ namespace Dan.Character.Enemy
         private float moveSpeed = 10f;
         [SerializeField]
         private GameObject explosionObj;
+        [SerializeField]
+        private float initialForwardMovementDistance = 5;
         
-
         public int MaxHitPoints => maxHitPoints;
         public int HitPoints { get; protected set; }
         public bool IsDead { get; protected set; }
         public float MoveSpeed => moveSpeed;
         
         protected bool OutOfCamera { get; set; }
+        protected Vector3 MoveDirection { get; set; }
 
         public event Action OnCharacterDeath;
         public event Action OnCharacterHit;
 
         protected Player TargetPlayer;
-        
         private CameraVisibility _camVisibility;
         private HitBox _hitBox;
         private Coroutine _removeRoutine;
 
-        public abstract void SetMoveDirection(Vector3 direction);
-        public abstract void StartMoving();
         public abstract void Hit();
+        protected abstract void StartFighting();
+
+        public void StartMoving()
+        {
+            IsDead = false;
+            OutOfCamera = false;
+            
+            transform.DOMove(transform.position + MoveDirection * initialForwardMovementDistance, 1.5f)
+                .SetEase(Ease.OutSine)
+                .OnComplete(StartFighting);
+        }
+        
+        public void SetMoveDirection(Vector3 direction)
+        {
+            MoveDirection = direction;
+        }
 
         public void SetPlayer(Player player)
         {

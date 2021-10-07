@@ -48,8 +48,6 @@ namespace Dan.Weapon
 
                 angle += angleStep;
             }
-            
-
 
             StartCoroutine(StartCooldown());
         }

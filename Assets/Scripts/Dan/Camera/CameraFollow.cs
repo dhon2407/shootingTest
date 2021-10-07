@@ -11,21 +11,8 @@ namespace Dan.Camera
         {
             _getCameraFollowPositionFunc = getCameraFollowPositionFunc;
         }
-
-        public void SetCameraFollowPosition(Vector3 cameraFollowPosition)
-        {
-            SetGetCameraFollowPositionFunc(() => cameraFollowPosition);
-        }
-
-        public void SetGetCameraFollowPositionFunc(Func<Vector3> getCameraFollowPositionFunc)
-        {
-            _getCameraFollowPositionFunc = getCameraFollowPositionFunc;
-        }
-
-        private void Update()
-        {
-            HandleMovement();
-        }
+        
+        private void Update() => HandleMovement();
 
         private void HandleMovement()
         {
