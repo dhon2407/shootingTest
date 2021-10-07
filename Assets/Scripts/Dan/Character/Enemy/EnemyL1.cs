@@ -11,30 +11,47 @@ namespace Dan.Character.Enemy
         [SerializeField]
         private Transform model;
         [SerializeField]
-        private float moveSpeed = 10f;
-        [SerializeField]
         private float initialForwardMovementDistance = 5;
         
-        private Player _player;
-        private Vector3 _targetDirection;
+        private Vector3 _moveDirection;
         private IWeapon _weapon;
-
-        public override void Initialize()
-        {
-            _weapon = GetComponentInChildren<IWeapon>();
-            GameFlowManager.OnGameEnd += GameEnds;
-        }
-
-        public override void SetPlayer(Player player)
-        {
-            _player = player;
-        }
 
         public override void StartMoving()
         {
-            transform.DOMove(transform.position + _targetDirection * initialForwardMovementDistance, 1.5f)
+            transform.DOMove(transform.position + _moveDirection * initialForwardMovementDistance, 1.5f)
                 .SetEase(Ease.OutSine)
                 .OnComplete(StartFighting);
+        }
+        
+        public override void SetMoveDirection(Vector3 direction)
+        {
+            _moveDirection = direction;
+        }
+        
+        protected override void Initialize()
+        {
+            base.Initialize();
+            _weapon = GetComponentInChildren<IWeapon>();
+        }
+        
+        public override void Hit()
+        {
+            InvokeOnCharacterHit();
+            HitPoints = Mathf.Max(0, HitPoints - 1);
+            if (HitPoints > 0)
+                return;
+            
+            Die();
+        }
+        
+        public override void Die()
+        {
+            transform.DOKill();
+            IsDead = true;
+            GameFlowManager.AddScore(enemyKillScore);
+            ResetParameters();
+            InvokeOnCharacterDeath();
+            gameObject.SetActive(false);
         }
 
         private void StartFighting()
@@ -48,19 +65,11 @@ namespace Dan.Character.Enemy
             StartRotating();
         }
 
-        public override void Die()
-        {
-            transform.DOKill();
-            IsDead = true;
-            GameFlowManager.AddScore(enemyKillScore);
-            gameObject.SetActive(false);
-        }
-
         private IEnumerator ContinueMoving()
         {
             while (gameObject.activeSelf)
             {
-                transform.position += _targetDirection * moveSpeed * Time.deltaTime;
+                transform.position += _moveDirection * MoveSpeed * Time.deltaTime;
                 yield return null;
             }
         }
@@ -71,26 +80,9 @@ namespace Dan.Character.Enemy
                 yield break;
             
             _weapon.ResetWeapon();
-            while (gameObject.activeSelf && _player != null)
+            while (gameObject.activeSelf && TargetPlayer != null)
             {
                 _weapon.Fire(transform.forward); 
-                yield return null;
-            }
-        }
-
-        public override void SetMoveDirection(Vector3 direction)
-        {
-            _targetDirection = direction;
-        }
-
-        private IEnumerator LookAtPlayer()
-        {
-            while (true)
-            {
-                if (_player == null)
-                    yield break;
-
-                transform.LookAt(_player.transform.position);   
                 yield return null;
             }
         }
@@ -101,12 +93,6 @@ namespace Dan.Character.Enemy
                 .SetLoops(-1, LoopType.Yoyo);
         }
 
-        public override void OnDisable()
-        {
-            ResetParameters();
-            base.OnDisable();
-        }
-
         private void ResetParameters()
         {
             model.DOKill(true);
@@ -114,12 +100,7 @@ namespace Dan.Character.Enemy
             transform.rotation = Quaternion.identity;
             transform.localPosition = Vector3.zero;
             IsDead = false;
-            CurrentHitPoints = hitPoints;
-        }
-        
-        private void GameEnds()
-        {
-            _player = null;
+            HitPoints = maxHitPoints;
         }
     }
 }

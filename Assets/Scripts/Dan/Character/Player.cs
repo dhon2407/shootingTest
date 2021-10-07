@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Dan.Character
 {
     [AddComponentMenu("Dan/SpherePlayer")]
-    public class Player : MonoBehaviour
+    public class Player : MonoBehaviour, ICharacter
     {
         [SerializeField]
         private float initialMovementSpeed;
@@ -17,17 +17,37 @@ namespace Dan.Character
 
         private ICharacterController _characterController;
         private IWeapon _weapon;
-        private int _currentHitPoints;
         private HitBox _hitBox;
         
-        public event Action<int,int> OnUpdateHP;
-        public event Action OnPlayerDie;
-        
+        public event Action OnCharacterDeath;
+        public event Action OnCharacterHit;
+
+        public int MaxHitPoints => hitPoints;
+        public int HitPoints { get; protected set; }
+        public float MoveSpeed => initialMovementSpeed;
         public bool IsDead { get; private set; }
 
         public void ResetGame()
         {
             InitializeParameters();
+        }
+        
+        public void Hit()
+        {
+            HitPoints = Mathf.Max(0, HitPoints - 1);
+            OnCharacterHit?.Invoke();
+            if (HitPoints <= 0)
+                Die();
+        }
+
+        public void Die()
+        {
+            if (IsDead)
+                return;
+            
+            IsDead = true;
+            OnCharacterDeath?.Invoke();
+            _characterController.Activate(false);
         }
         
         private void Awake()
@@ -40,7 +60,7 @@ namespace Dan.Character
 
         private void InitializeParameters()
         {
-            _currentHitPoints = hitPoints;
+            HitPoints = MaxHitPoints;
             transform.position = Vector3.zero;
             IsDead = false;
             _characterController.Activate(false);
@@ -49,7 +69,7 @@ namespace Dan.Character
         private void InitializeComponents()
         {
             _characterController = gameObject.AddComponent<PlayerController>();
-            _characterController.SetMovespeed(initialMovementSpeed);
+            _characterController.SetMovespeed(MoveSpeed);
             _characterController.OnFireWeapon += FireWeapon;
             
             _weapon = GetComponentInChildren<IWeapon>();
@@ -63,24 +83,6 @@ namespace Dan.Character
         private void GameStart()
         {
             _characterController.Activate(true);
-        }
-        
-        private void Hit()
-        {
-            _currentHitPoints = Mathf.Max(0, _currentHitPoints - 1);
-            OnUpdateHP?.Invoke(_currentHitPoints, hitPoints);
-            if (_currentHitPoints <= 0)
-                Die();
-        }
-
-        private void Die()
-        {
-            if (IsDead)
-                return;
-            
-            IsDead = true;
-            _characterController.Activate(false);
-            OnPlayerDie?.Invoke();
         }
     }
 }

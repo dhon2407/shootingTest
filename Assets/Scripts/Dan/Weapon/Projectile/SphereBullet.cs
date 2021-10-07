@@ -12,22 +12,8 @@ namespace Dan.Weapon.Projectile
 
         private Vector3 _direction;
         private Vector3 _firedPosition;
-        private AttackBox _attackBox;
 
-        private void Awake()
-        {
-            _attackBox = GetComponentInChildren<AttackBox>();
-            if (_attackBox != null)
-                _attackBox.OnHit += Hit;
-        }
-
-        private void OnDestroy()
-        {
-            if (_attackBox != null)
-                _attackBox.OnHit -= Hit;
-        }
-
-        private void Hit()
+        protected override void Hit()
         {
             gameObject.SetActive(false);
         }

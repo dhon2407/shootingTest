@@ -30,8 +30,8 @@ namespace Dan.Weapon
                 return;
             
             var bullet = _bulletPool.GetObject();
-            bullet.tag = tag;
-            bullet.SetRange(weaponRange);
+            bullet.SetOwner(transform)
+                .SetRange(weaponRange);
             bullet.Fire(transform.position, direction);
 
             StartCoroutine(StartCooldown());

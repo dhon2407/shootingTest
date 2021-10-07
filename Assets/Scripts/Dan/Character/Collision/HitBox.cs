@@ -12,7 +12,7 @@ namespace Dan.Character.Collision
             if (attackBox == null || attackBox.CompareTag(tag))
                 return;
             
-            attackBox.OnHit();
+            attackBox.Hit();
             OnHit?.Invoke();
         }
     }

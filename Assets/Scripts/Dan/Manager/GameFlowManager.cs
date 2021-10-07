@@ -42,30 +42,7 @@ namespace Dan.Manager
             _instance._playerScore = _instance.scoreText.Score;
         }
         
-        public static void ReturnToTitle()
-        {
-            _instance.ResetGame();
-        }
-
-        private void SetupEvents()
-        {
-            player.OnUpdateHP += UpdatePlayerHP;
-            player.OnPlayerDie += PlayerDie;
-            titleScreen.OnPressPlay += StartGame;
-            foreach (var inputHandler in _inputHandlers)
-                inputHandler.Pause += TogglePause;
-        }
-
-        private void ClearEvents()
-        {
-            player.OnUpdateHP -= UpdatePlayerHP;
-            player.OnPlayerDie -= PlayerDie;
-            titleScreen.OnPressPlay -= StartGame;
-            foreach (var inputHandler in _inputHandlers)
-                inputHandler.Pause -= TogglePause;
-        }
-
-        private void Start() => titleScreen.StartNewGame();
+        public static void ReturnToTitle() => _instance.ResetGame();
 
         private void Awake()
         {
@@ -78,6 +55,27 @@ namespace Dan.Manager
             _instance = this;
             SetupComponents();
             SetupEvents();
+        }
+
+        private void Start() => titleScreen.StartNewGame();
+        private void OnDestroy() => ClearEvents();
+        
+        private void SetupEvents()
+        {
+            player.OnCharacterHit += UpdatePlayerHP;
+            player.OnCharacterDeath += PlayerDie;
+            titleScreen.OnPressPlay += StartGame;
+            foreach (var inputHandler in _inputHandlers)
+                inputHandler.Pause += TogglePause;
+        }
+
+        private void ClearEvents()
+        {
+            player.OnCharacterHit -= UpdatePlayerHP;
+            player.OnCharacterDeath -= PlayerDie;
+            titleScreen.OnPressPlay -= StartGame;
+            foreach (var inputHandler in _inputHandlers)
+                inputHandler.Pause -= TogglePause;
         }
 
         private void SetupComponents()
@@ -93,9 +91,7 @@ namespace Dan.Manager
             _isPause = !_isPause;
             pauseScreen.Pause(_isPause);
         }
-
-        private void OnDestroy() => ClearEvents();
-
+        
         private void StartGame()
         {
             titleScreen.Hide();
@@ -107,9 +103,9 @@ namespace Dan.Manager
             });
         }
         
-        private void UpdatePlayerHP(int current, int max)
+        private void UpdatePlayerHP()
         {
-            healthSlider.SetValue(current / (float)max);
+            healthSlider.SetValue( player.HitPoints / (float)player.MaxHitPoints);
         }
         
         private void PlayerDie()
@@ -128,7 +124,6 @@ namespace Dan.Manager
             hudScreen.Hide();
             titleScreen.Show();
             pauseScreen.Hide();
-            
             titleScreen.StartNewGame();
         }
     }

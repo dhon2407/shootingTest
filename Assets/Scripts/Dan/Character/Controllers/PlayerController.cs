@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Dan.Character.Input;
 using UnityEngine;
 
@@ -8,16 +9,19 @@ namespace Dan.Character.Controllers
     {
         [SerializeField]
         private float movementSpeed;
+        
+        public event Action OnFireWeapon;
 
         private IInputHandler _inputHandler;
         private Vector3 _targetPosition;
         private bool _active;
-
-        public event Action OnFireWeapon;
-
+        
         public void Activate(bool active)
         {
             _active = active;
+
+            if (active)
+                StartCoroutine(StartMovement());
         }
         
         public void SetMovespeed(float speed)
@@ -37,15 +41,16 @@ namespace Dan.Character.Controllers
         }
 
         private void FireWeapon() => OnFireWeapon?.Invoke();
-
-        private void Update()
+        
+        private IEnumerator StartMovement()
         {
-            if (!_active)
-                return;
-            
-            _targetPosition = transform.position + _inputHandler.MoveVector;
-            transform.position = Vector3.Lerp(transform.position, _targetPosition,
-                movementSpeed * Time.deltaTime);
+            while (_active)
+            {
+                _targetPosition = transform.position + _inputHandler.MoveVector;
+                transform.position = Vector3.Lerp(transform.position, _targetPosition,
+                    movementSpeed * Time.deltaTime);
+                yield return null;
+            }
         }
     }
 }

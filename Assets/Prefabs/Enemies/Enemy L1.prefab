@@ -212,7 +212,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: -2529778996967499014, guid: c08fb2295b727dd45a414562931824e6, type: 3}
-  projectilePoolCount: 20
+  projectilePoolCount: 5
   weaponRange: 30
   fireSpeed: 0.7
 --- !u!1 &8205035551131575323
@@ -262,7 +262,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToRemove: 0.5
-  hitPoints: 2
-  model: {fileID: 3080359203138842320}
+  maxHitPoints: 2
+  enemyKillScore: 10
   moveSpeed: 2
+  model: {fileID: 3080359203138842320}
   initialForwardMovementDistance: 5

@@ -50,7 +50,6 @@ namespace Dan.UI
 
         private void CalculateScore(int playerScore)
         {
-            Debug.Log("Calculating score.");
             var currentHighScore = playerScore;
             var lastHighScore = 0;
             if (PlayerPrefs.HasKey(HighScoreCodeKey))
