@@ -40,8 +40,12 @@ namespace Dan.Character.Controllers
             _inputHandler.Fire -= FireWeapon;
         }
 
-        private void FireWeapon() => OnFireWeapon?.Invoke();
-        
+        private void FireWeapon()
+        {
+            if (_active)
+                OnFireWeapon?.Invoke();
+        }
+
         private IEnumerator StartMovement()
         {
             while (_active)

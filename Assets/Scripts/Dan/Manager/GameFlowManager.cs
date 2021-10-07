@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dan.Camera;
 using Dan.Character.Input;
 using Dan.UI;
 using Dan.UI.HUD;
@@ -10,6 +11,8 @@ namespace Dan.Manager
 {
     public class GameFlowManager : MonoBehaviour
     {
+        [SerializeField]
+        private CameraFollow cameraFollow;
         [SerializeField]
         private Dan.Character.Player player;
         [SerializeField]
@@ -100,6 +103,7 @@ namespace Dan.Manager
             {
                 OnGameStart?.Invoke();
                 _gameStarted = true;
+                cameraFollow.Setup(() => player.CameraFocus.position);
             });
         }
         
@@ -114,6 +118,8 @@ namespace Dan.Manager
             hudScreen.Hide();
             pauseScreen.EndGame(_playerScore);
             OnGameEnd?.Invoke();
+            
+            cameraFollow.Setup(() => player.transform.position);
         }
 
         private void ResetGame()

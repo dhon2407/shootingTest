@@ -22,6 +22,8 @@ namespace Dan.Character.Enemy
         public int HitPoints { get; protected set; }
         public bool IsDead { get; protected set; }
         public float MoveSpeed => moveSpeed;
+        
+        protected bool OutOfCamera { get; private set; }
 
         public event Action OnCharacterDeath;
         public event Action OnCharacterHit;
@@ -71,7 +73,12 @@ namespace Dan.Character.Enemy
             Initialize();
             SetupEvents();
         }
-        
+
+        private void OnEnable()
+        {
+            OutOfCamera = false;
+        }
+
         private void OnDestroy() => ClearEvents();
 
         private void SetupEvents()
@@ -115,7 +122,8 @@ namespace Dan.Character.Enemy
                 yield return null;
                 timeLapse += Time.deltaTime;
             }
-            
+
+            OutOfCamera = true;
             gameObject.SetActive(false);
         }
     }

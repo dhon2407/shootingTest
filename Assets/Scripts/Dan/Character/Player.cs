@@ -14,6 +14,8 @@ namespace Dan.Character
         private float initialMovementSpeed;
         [SerializeField]
         private int hitPoints;
+        [SerializeField]
+        private Transform cameraFocus;
 
         private ICharacterController _characterController;
         private IWeapon _weapon;
@@ -22,6 +24,7 @@ namespace Dan.Character
         public event Action OnCharacterDeath;
         public event Action OnCharacterHit;
 
+        public Transform CameraFocus => cameraFocus;
         public int MaxHitPoints => hitPoints;
         public int HitPoints { get; protected set; }
         public float MoveSpeed => initialMovementSpeed;

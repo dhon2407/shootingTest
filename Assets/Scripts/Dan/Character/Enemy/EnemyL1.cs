@@ -56,7 +56,7 @@ namespace Dan.Character.Enemy
 
         private void StartFighting()
         {
-            if (IsDead)
+            if (IsDead || OutOfCamera)
                 return;
             
             StartCoroutine(LookAtPlayer());
