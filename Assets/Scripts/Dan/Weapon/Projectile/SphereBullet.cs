@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections;
-using Dan.Character.Collision;
+﻿using System.Collections;
+using Dan.Manager;
 using PolygonArsenal;
 using UnityEngine;
 
@@ -22,6 +21,7 @@ namespace Dan.Weapon.Projectile
         protected override void Hit()
         {
             var impactP = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            impactP.transform.SetParent(FreeObjectPool.Transform);
             Destroy(impactP, 0.5f);
             
             gameObject.SetActive(false);
