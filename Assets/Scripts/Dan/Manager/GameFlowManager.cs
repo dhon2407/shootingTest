@@ -30,6 +30,10 @@ namespace Dan.Manager
 
         public static event Action OnGameStart;
         public static event Action OnGameEnd;
+        public static event Action<int> OnLevelChange;
+
+        public static int CurrentLevel => _instance._currentLevel;
+        
         private static GameFlowManager _instance;
         private IEnumerable<IInputHandler> _inputHandlers;
         private bool _isPause;
@@ -37,14 +41,11 @@ namespace Dan.Manager
         private int _playerScore;
         private int _currentLevel = 1;
 
-        public static int CurrentLevel => _instance._currentLevel;
-        
         public static void AddScore(int score)
         {
-            _instance.scoreText.Score += score;
-            _instance._playerScore = _instance.scoreText.Score;
+            _instance.CalculateAdditionalScore(score);
         }
-        
+
         public static void ReturnToTitle() => _instance.ResetGame();
 
         private void Awake()
@@ -121,10 +122,25 @@ namespace Dan.Manager
             
             cameraFollow.Setup(() => player.transform.position);
         }
+        
+        private void CalculateAdditionalScore(int score)
+        {
+            scoreText.Score += score;
+            _playerScore = _instance.scoreText.Score;
+
+            var newLevel = (int)Mathf.Floor(25 + Mathf.Sqrt(300 + 100 * _playerScore / 10f)) / 50;
+            if (newLevel > _currentLevel)
+            {
+                _currentLevel = newLevel;
+                levelIndicator.Show($"Level {_currentLevel}");
+                OnLevelChange?.Invoke(_currentLevel);
+            }
+        }
 
         private void ResetGame()
         {
             _gameStarted = false;
+            _playerScore = 0;
             _currentLevel = 1;
             player.ResetGame();
             hudScreen.Hide();

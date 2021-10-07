@@ -10,6 +10,8 @@ namespace Dan.Character.Enemy
     public class EnemySpawner : MonoBehaviour
     {
         [SerializeField]
+        private int startAtLevel = 1;
+        [SerializeField]
         private int poolCount = 5;
         [SerializeField]
         private float horizontalRange;
@@ -21,11 +23,15 @@ namespace Dan.Character.Enemy
         private float spawningInterval = 0.2f;
         [SerializeField]
         private float startSpawnDelay;
+        [SerializeField]
+        private int maxGroupSpawnLimit;
 
         private GameObjectPool<BaseEnemy> _enemyPool;
         private Player _player;
         private bool _spawning;
         private bool _gameStarted;
+        private int _currentLevel = 1;
+        private Coroutine _spawningRoutine;
 
         private void Spawn()
         {
@@ -33,7 +39,7 @@ namespace Dan.Character.Enemy
                 return;
             
             RandomizePosition();
-            StartCoroutine(SpawnEnemies(Random.Range(1, 2)));
+            StartCoroutine(SpawnEnemies(Mathf.Min(maxGroupSpawnLimit,Random.Range(1, 2 * _currentLevel))));
         }
 
         private IEnumerator SpawnEnemies(int enemyCount)
@@ -76,19 +82,32 @@ namespace Dan.Character.Enemy
         {
             _enemyPool = GameObjectPool<BaseEnemy>.CreateInstance(enemyPrefabList, poolCount, FreeObjectPool.Transform);
             GameFlowManager.OnGameStart += StartSpawning;
+            GameFlowManager.OnLevelChange += LevelChange;
             GameFlowManager.OnGameEnd += GameEnds;
         }
 
         private void OnDestroy()
         {
             GameFlowManager.OnGameStart -= StartSpawning;
+            GameFlowManager.OnLevelChange += LevelChange;
             GameFlowManager.OnGameEnd -= GameEnds;
+        }
+
+        private void LevelChange(int currentLevel)
+        {
+            _currentLevel = currentLevel;
+            if (_spawningRoutine != null)
+                StopCoroutine(_spawningRoutine);
+            
+            StartCoroutine(ContinuousSpawning());
         }
 
         private void StartSpawning()
         {
             _gameStarted = true;
-            StartCoroutine(ContinuousSpawning());
+            
+            if (startAtLevel <= GameFlowManager.CurrentLevel)
+                _spawningRoutine = StartCoroutine(ContinuousSpawning());
         }
 
         private IEnumerator ContinuousSpawning()
@@ -104,6 +123,7 @@ namespace Dan.Character.Enemy
         private void GameEnds()
         {
             _gameStarted = false;
+            _currentLevel = 1;
         }
 
         private void OnDrawGizmos()

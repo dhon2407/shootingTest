@@ -263,7 +263,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeToRemove: 0.5
   maxHitPoints: 2
-  enemyKillScore: 10
+  enemyKillScore: 100
   moveSpeed: 2
   model: {fileID: 3080359203138842320}
   initialForwardMovementDistance: 5

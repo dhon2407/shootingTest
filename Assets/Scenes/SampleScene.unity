@@ -1443,6 +1443,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1106369385}
   - component: {fileID: 1106369386}
+  - component: {fileID: 1106369387}
   m_Layer: 0
   m_Name: GameFlow
   m_TagString: Untagged
@@ -1484,6 +1485,18 @@ MonoBehaviour:
   scoreText: {fileID: 999465704}
   healthSlider: {fileID: 1425452942}
   levelIndicator: {fileID: 878210199}
+--- !u!114 &1106369387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1106369384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbc7a0dd70ced724da458108ccc2d9af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1109414498
 GameObject:
   m_ObjectHideFlags: 0
@@ -2486,6 +2499,7 @@ MonoBehaviour:
   endTarget: {fileID: 1990041294}
   spawningInterval: 0.4
   startSpawnDelay: 2
+  maxGroupSpawnLimit: 5
 --- !u!1001 &3481066859573715565
 PrefabInstance:
   m_ObjectHideFlags: 0

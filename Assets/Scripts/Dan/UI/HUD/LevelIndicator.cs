@@ -10,7 +10,7 @@ namespace Dan.UI.HUD
 
         public void Show(string levelName)
         {
-            _text.text = $"<{levelName}>";
+            _text.text = $"{levelName}";
             transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack)
                 .OnComplete(() =>
                 {
