@@ -134,7 +134,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 352c41ff7d466b1409e4d6adaa82dfac, type: 2}
+  - {fileID: 2100000, guid: a2e8e2da36df1a4488cc874c27e0b063, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -177,7 +177,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1039109751398557747}
-  - component: {fileID: 2685634954746965581}
+  - component: {fileID: 2066621831868706633}
   m_Layer: 7
   m_Name: SphereShooter
   m_TagString: Enemy
@@ -199,7 +199,7 @@ Transform:
   m_Father: {fileID: 3552601029668085723}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2685634954746965581
+--- !u!114 &2066621831868706633
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -208,13 +208,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 4812987434264826516}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6156d38fbca24627adaab52cfce59df8, type: 3}
+  m_Script: {fileID: 11500000, guid: b93afaf9604a4f95aafa98d5f6e34d95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: -2529778996967499014, guid: c08fb2295b727dd45a414562931824e6, type: 3}
-  projectilePoolCount: 5
-  weaponRange: 30
-  fireSpeed: 0.7
+  projectilePrefab: {fileID: -2529778996967499014, guid: 972044cb1f61f1b49ab9e449160e8c64, type: 3}
+  projectilePoolCount: 200
+  weaponRange: 60
+  fireSpeed: 0.1
+  spreadCount: 5
 --- !u!1 &8205035551131575323
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,9 +225,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3552601029668085723}
-  - component: {fileID: 3379150662569064768}
+  - component: {fileID: 1445612462555993412}
   m_Layer: 7
-  m_Name: Enemy L1
+  m_Name: Enemy L3
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -249,7 +250,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3379150662569064768
+--- !u!114 &1445612462555993412
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -258,13 +259,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 8205035551131575323}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00a75f68713643c19956921d5ddd1728, type: 3}
+  m_Script: {fileID: 11500000, guid: 934c4dec90484234b25463484baa3d10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToRemove: 0.5
-  maxHitPoints: 2
-  enemyKillScore: 100
-  moveSpeed: 2
+  timeToRemove: 2
+  maxHitPoints: 5
+  enemyKillScore: 200
+  moveSpeed: 1
   explosionObj: {fileID: 1298315647077242, guid: 72160083e1a24a94b88cb874c61f8d39, type: 3}
   model: {fileID: 3080359203138842320}
-  initialForwardMovementDistance: 5
+  initialForwardMovementDistance: 6

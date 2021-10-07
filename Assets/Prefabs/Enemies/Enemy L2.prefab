@@ -134,7 +134,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 352c41ff7d466b1409e4d6adaa82dfac, type: 2}
+  - {fileID: 2100000, guid: 618ec367b01e75943b1c510131d83db8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -211,10 +211,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6156d38fbca24627adaab52cfce59df8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: -2529778996967499014, guid: c08fb2295b727dd45a414562931824e6, type: 3}
+  projectilePrefab: {fileID: -2529778996967499014, guid: 1adaf1a40e141ca42b721c16d7570109, type: 3}
   projectilePoolCount: 5
-  weaponRange: 30
-  fireSpeed: 0.7
+  weaponRange: 40
+  fireSpeed: 0.1
 --- !u!1 &8205035551131575323
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,9 +224,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3552601029668085723}
-  - component: {fileID: 3379150662569064768}
+  - component: {fileID: 4974869939016271073}
   m_Layer: 7
-  m_Name: Enemy L1
+  m_Name: Enemy L2
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -249,7 +249,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3379150662569064768
+--- !u!114 &4974869939016271073
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -258,13 +258,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 8205035551131575323}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00a75f68713643c19956921d5ddd1728, type: 3}
+  m_Script: {fileID: 11500000, guid: 2c0a0835a0394f018717014c949369fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToRemove: 0.5
-  maxHitPoints: 2
-  enemyKillScore: 100
-  moveSpeed: 2
+  timeToRemove: 1
+  maxHitPoints: 4
+  enemyKillScore: 120
+  moveSpeed: 1
   explosionObj: {fileID: 1298315647077242, guid: 72160083e1a24a94b88cb874c61f8d39, type: 3}
   model: {fileID: 3080359203138842320}
-  initialForwardMovementDistance: 5
+  initialForwardMovementDistance: 6

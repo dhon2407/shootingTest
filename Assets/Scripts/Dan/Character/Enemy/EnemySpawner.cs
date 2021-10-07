@@ -14,7 +14,7 @@ namespace Dan.Character.Enemy
         [SerializeField]
         private int poolCount = 5;
         [SerializeField]
-        private float horizontalRange;
+        private float spawnRange;
         [SerializeField]
         private PoolableMonobehaviour[] enemyPrefabList;
         [SerializeField]
@@ -25,6 +25,8 @@ namespace Dan.Character.Enemy
         private float startSpawnDelay;
         [SerializeField]
         private int maxGroupSpawnLimit;
+        [SerializeField]
+        private bool isOnHorizontalAxis = true;
 
         private GameObjectPool<BaseEnemy> _enemyPool;
         private Player _player;
@@ -67,9 +69,14 @@ namespace Dan.Character.Enemy
 
         private void RandomizePosition()
         {
-            var horizontalOffset = Random.Range(-horizontalRange, horizontalRange);
+            var rangeOffset = Random.Range(-spawnRange, spawnRange);
             var randomPosition = transform.localPosition;
-            randomPosition.x = horizontalOffset;
+
+            if (isOnHorizontalAxis)
+                randomPosition.x = rangeOffset;
+            else
+                randomPosition.y = rangeOffset;
+            
             transform.localPosition = randomPosition;
         }
 
@@ -99,7 +106,8 @@ namespace Dan.Character.Enemy
             if (_spawningRoutine != null)
                 StopCoroutine(_spawningRoutine);
             
-            StartCoroutine(ContinuousSpawning());
+            if (startAtLevel <= GameFlowManager.CurrentLevel)
+                _spawningRoutine = StartCoroutine(ContinuousSpawning());
         }
 
         private void StartSpawning()
@@ -131,8 +139,16 @@ namespace Dan.Character.Enemy
             var startRangePosition = transform.position;
             var endRangePosition = transform.position;
 
-            startRangePosition.x -= horizontalRange;
-            endRangePosition.x += horizontalRange;
+            if (isOnHorizontalAxis)
+            {
+                startRangePosition.x -= spawnRange;
+                endRangePosition.x += spawnRange;
+            }
+            else
+            {
+                startRangePosition.y -= spawnRange;
+                endRangePosition.y += spawnRange;
+            }
 
             Gizmos.color = Color.white;
             Gizmos.DrawLine(startRangePosition, endRangePosition);

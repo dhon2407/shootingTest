@@ -57,10 +57,10 @@ namespace Dan.UI
 
             var isNewRecord = currentHighScore > lastHighScore;
 
-            DOTween.To(() => 0, value => currentScore.text = $"Score : {value:00000}", currentHighScore, 1f)
+            DOTween.To(() => 0, value => currentScore.text = $"Score : {value:00000000}", currentHighScore, 1f)
                 .OnComplete(() =>
                 {
-                    topScore.text = $"Top Score : {(isNewRecord ? currentHighScore : lastHighScore):00000}";
+                    topScore.text = $"Top Score : {(isNewRecord ? currentHighScore : lastHighScore):00000000}";
                     topScoreCG.DOFade(1, 0.2f);
 
                     if (isNewRecord)

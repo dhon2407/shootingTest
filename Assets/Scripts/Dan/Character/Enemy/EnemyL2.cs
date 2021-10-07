@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Dan.Character.Enemy
 {
-    public class EnemyL1 : BaseEnemy
+    public class EnemyL2 : BaseEnemy
     {
         [SerializeField]
         private Transform model;
@@ -14,11 +14,13 @@ namespace Dan.Character.Enemy
         
         private Vector3 _moveDirection;
         private IWeapon _weapon;
+        private bool _fireMode;
 
         public override void StartMoving()
         {
             IsDead = false;
             OutOfCamera = false;
+            
             transform.DOMove(transform.position + _moveDirection * initialForwardMovementDistance, 1.5f)
                 .SetEase(Ease.OutSine)
                 .OnComplete(StartFighting);
@@ -57,16 +59,33 @@ namespace Dan.Character.Enemy
         {
             if (IsDead || OutOfCamera)
                 return;
-            
-            StartCoroutine(LookAtPlayer());
-            StartCoroutine(ContinueMoving());
-            StartCoroutine(StartFiring());
-            StartRotating();
+
+            StartCoroutine(RandomlyFireAtPlayer());
+        }
+
+        private IEnumerator RandomlyFireAtPlayer()
+        {
+            while (!IsDead)
+            {
+                _fireMode = true;
+                StartRotating();
+                var lookRoutine = StartCoroutine(LookAtPlayer());
+                yield return new WaitForSeconds(0.5f);
+                StartCoroutine(StartFiring());
+                yield return new WaitForSeconds(3f);
+                _fireMode = false;
+                if (lookRoutine != null)
+                    StopCoroutine(lookRoutine);
+                StopRotating();
+                StartCoroutine(ContinueMoving());
+                yield return new WaitForSeconds(5f);
+            }
         }
 
         private IEnumerator ContinueMoving()
         {
-            while (gameObject.activeSelf)
+            transform.DOLookAt(_moveDirection, 0.2f);
+            while (gameObject.activeSelf && !_fireMode)
             {
                 transform.position += _moveDirection * MoveSpeed * Time.deltaTime;
                 yield return null;
@@ -79,7 +98,7 @@ namespace Dan.Character.Enemy
                 yield break;
             
             _weapon.ResetWeapon();
-            while (gameObject.activeSelf && TargetPlayer != null)
+            while (gameObject.activeSelf && TargetPlayer != null && _fireMode)
             {
                 _weapon.Fire(transform.forward); 
                 yield return null;
@@ -90,6 +109,12 @@ namespace Dan.Character.Enemy
         {
             model.DOLocalRotate(Quaternion.Euler(0, 0, 180).eulerAngles, 0.7f, RotateMode.FastBeyond360)
                 .SetLoops(-1, LoopType.Yoyo);
+        }
+
+        private void StopRotating()
+        {
+            model.DOKill(true);
+            model.DOLocalRotate(Quaternion.identity.eulerAngles, 0.1f);
         }
 
         private void ResetParameters()

@@ -16,6 +16,8 @@ namespace Dan.Character
         private int hitPoints;
         [SerializeField]
         private Transform cameraFocus;
+        [SerializeField]
+        private GameObject explosionObj;
 
         private ICharacterController _characterController;
         private IWeapon _weapon;
@@ -50,6 +52,8 @@ namespace Dan.Character
             
             IsDead = true;
             OnCharacterDeath?.Invoke();
+            Destroy(Instantiate(explosionObj, transform.position, Quaternion.identity), 2f);
+            transform.localScale = Vector3.zero;
             _characterController.Activate(false);
         }
         
@@ -65,6 +69,7 @@ namespace Dan.Character
         {
             HitPoints = MaxHitPoints;
             transform.position = Vector3.zero;
+            transform.localScale = Vector3.one;
             IsDead = false;
             _characterController.Activate(false);
         }

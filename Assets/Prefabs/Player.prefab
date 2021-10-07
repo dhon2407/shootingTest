@@ -44,7 +44,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.35
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &374063819
 Rigidbody:
@@ -74,6 +74,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b473da1ec934a5e8f8a0e928d03f3cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1575811405
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1575811406}
+  m_Layer: 6
+  m_Name: CameraFocus
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1575811406
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1575811405}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2805642853206812110}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1775378382
 GameObject:
   m_ObjectHideFlags: 0
@@ -234,6 +264,7 @@ Transform:
   - {fileID: 7564871203693786499}
   - {fileID: 1775378383}
   - {fileID: 374063818}
+  - {fileID: 1575811406}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -249,7 +280,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d091e85af1674049ab4cef6c340da380, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialMovementSpeed: 25
+  initialMovementSpeed: 15
+  hitPoints: 10
+  cameraFocus: {fileID: 1575811406}
+  explosionObj: {fileID: 1736425513783660746, guid: 7da75dee3f9260444b0e5b777d5a1462, type: 3}
 --- !u!114 &3481066859573715567
 MonoBehaviour:
   m_ObjectHideFlags: 0

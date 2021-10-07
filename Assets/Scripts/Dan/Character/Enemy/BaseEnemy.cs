@@ -17,13 +17,16 @@ namespace Dan.Character.Enemy
         protected int enemyKillScore = 10;
         [SerializeField]
         private float moveSpeed = 10f;
+        [SerializeField]
+        private GameObject explosionObj;
+        
 
         public int MaxHitPoints => maxHitPoints;
         public int HitPoints { get; protected set; }
         public bool IsDead { get; protected set; }
         public float MoveSpeed => moveSpeed;
         
-        protected bool OutOfCamera { get; private set; }
+        protected bool OutOfCamera { get; set; }
 
         public event Action OnCharacterDeath;
         public event Action OnCharacterHit;
@@ -32,15 +35,27 @@ namespace Dan.Character.Enemy
         
         private CameraVisibility _camVisibility;
         private HitBox _hitBox;
+        private Coroutine _removeRoutine;
 
         public abstract void SetMoveDirection(Vector3 direction);
         public abstract void StartMoving();
-        public abstract void Die();
         public abstract void Hit();
 
         public void SetPlayer(Player player)
         {
             TargetPlayer = player;
+        }
+        
+        public virtual void Die()
+        {
+            IsDead = true;
+            GameFlowManager.AddScore(enemyKillScore);
+            InvokeOnCharacterDeath();
+            Destroy(Instantiate(explosionObj, transform.position, Quaternion.identity, FreeObjectPool.Transform), 2f);
+            
+            transform.rotation = Quaternion.identity;
+            transform.localPosition = Vector3.zero;
+            gameObject.SetActive(false);
         }
         
         protected virtual void Initialize()
@@ -74,11 +89,6 @@ namespace Dan.Character.Enemy
             SetupEvents();
         }
 
-        private void OnEnable()
-        {
-            OutOfCamera = false;
-        }
-
         private void OnDestroy() => ClearEvents();
 
         private void SetupEvents()
@@ -106,11 +116,16 @@ namespace Dan.Character.Enemy
         {
             if (!gameObject.activeSelf || maxHitPoints <= 0)
                 return;
-            
+
             if (isVisible)
-                StopCoroutine(RemoveFromPlay());
+            {
+                if (_removeRoutine != null)
+                    StopCoroutine(_removeRoutine);
+            }
             else
-                StartCoroutine(RemoveFromPlay());
+            {
+                _removeRoutine = StartCoroutine(RemoveFromPlay());
+            }
         }
 
         private IEnumerator RemoveFromPlay()
