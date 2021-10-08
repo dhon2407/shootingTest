@@ -41,7 +41,7 @@ namespace Dan.Character.Enemy
                 return;
             
             RandomizePosition();
-            StartCoroutine(SpawnEnemies(Mathf.Min(maxGroupSpawnLimit,Random.Range(1, 2 * _currentLevel))));
+            StartCoroutine(SpawnEnemies(Mathf.Min(maxGroupSpawnLimit,Random.Range(1, 2 * _currentLevel - startAtLevel))));
         }
 
         private IEnumerator SpawnEnemies(int enemyCount)
@@ -50,6 +50,9 @@ namespace Dan.Character.Enemy
             
             for (int i = 0; i < enemyCount; i++)
             {
+                if (!_gameStarted)
+                    yield break;
+                
                 var enemy = _enemyPool.GetObject();
                 if (enemy == null)
                 {

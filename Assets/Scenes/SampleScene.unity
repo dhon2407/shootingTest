@@ -923,7 +923,7 @@ MonoBehaviour:
   endTarget: {fileID: 267283312}
   spawningInterval: 4
   startSpawnDelay: 2
-  maxGroupSpawnLimit: 2
+  maxGroupSpawnLimit: 3
   isOnHorizontalAxis: 1
 --- !u!1 &705507993
 GameObject:
@@ -1169,7 +1169,7 @@ Transform:
   m_GameObject: {fileID: 756407150}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 3.8666663, z: 24.5}
-  m_LocalScale: {x: 300, y: 300, z: 1}
+  m_LocalScale: {x: 2000, y: 2000, z: 1}
   m_Children: []
   m_Father: {fileID: 431413297}
   m_RootOrder: 0
@@ -1225,7 +1225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b32e432b2541bb9f399b7f45a35f76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audio: {fileID: 0}
+  audio: {fileID: 878210202}
 --- !u!114 &878210200
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1792,7 +1792,7 @@ MonoBehaviour:
   endTarget: {fileID: 131100979}
   spawningInterval: 2
   startSpawnDelay: 2
-  maxGroupSpawnLimit: 1
+  maxGroupSpawnLimit: 2
   isOnHorizontalAxis: 0
 --- !u!1 &1101155569
 GameObject:
@@ -2385,7 +2385,7 @@ MonoBehaviour:
   endTarget: {fileID: 416026352}
   spawningInterval: 2
   startSpawnDelay: 2
-  maxGroupSpawnLimit: 1
+  maxGroupSpawnLimit: 2
   isOnHorizontalAxis: 0
 --- !u!1 &1594793178
 GameObject:

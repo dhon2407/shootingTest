@@ -116,7 +116,8 @@ namespace Dan.Character.Enemy
             _hitBox = GetComponentInChildren<HitBox>();
             if (_hitBox != null)
                 _hitBox.OnHit += Hit;
-            
+
+            GameFlowManager.OnGameStart += GameStart;
             GameFlowManager.OnGameEnd += GameEnds;
         }
 
@@ -126,6 +127,16 @@ namespace Dan.Character.Enemy
                 _camVisibility.OnVisibilityChange -= ChangeCameraVisibility;
             if (_hitBox != null)
                 _hitBox.OnHit -= Hit;
+            
+            GameFlowManager.OnGameStart -= GameStart;
+            GameFlowManager.OnGameEnd += GameEnds;
+        }
+
+        private void GameStart()
+        {
+            transform.rotation = Quaternion.identity;
+            transform.localPosition = Vector3.zero;
+            gameObject.SetActive(false);
         }
 
         private void ChangeCameraVisibility(bool isVisible)

@@ -19,6 +19,9 @@ namespace Dan.Character
         [SerializeField]
         private GameObject explosionObj;
 
+        [SerializeField]
+        private OrbitingSphere[] orbitingSpheres;
+
         private ICharacterController _characterController;
         private IWeapon _weapon;
         private HitBox _hitBox;
@@ -63,6 +66,7 @@ namespace Dan.Character
             InitializeParameters();
 
             GameFlowManager.OnGameStart += GameStart;
+            GameFlowManager.OnLevelChange += LevelIncrease;
         }
 
         private void InitializeParameters()
@@ -86,11 +90,22 @@ namespace Dan.Character
                 _hitBox.OnHit += Hit;
         }
 
-        private void FireWeapon() => _weapon?.Fire(transform.up);
+        private void FireWeapon()
+        {
+            _weapon?.Fire(transform.up);
+            foreach (var orbitingSphere in orbitingSpheres)
+                orbitingSphere.FireWeapons(transform.up);
+        }
 
         private void GameStart()
         {
             _characterController.Activate(true);
+        }
+        
+        private void LevelIncrease(int currentLevel)
+        {
+            foreach (var orbitingSphere in orbitingSpheres)
+                orbitingSphere.SetCurrentLevel(currentLevel);
         }
     }
 }

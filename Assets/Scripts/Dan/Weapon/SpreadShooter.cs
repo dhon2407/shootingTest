@@ -16,11 +16,14 @@ namespace Dan.Weapon
         private float weaponRange = 10f;
         [SerializeField]
         private float fireSpeed;
+        [SerializeField]
+        private int activationLevel = 1;
 
         [SerializeField]
         private int spreadCount = 5; 
 
         public float FireSpeed => fireSpeed;
+        public int ActivationLevel => activationLevel;
 
         private bool IsReadyToFire { get; set; } = false;
         private GameObjectPool<BaseProjectile> _bulletPool;
