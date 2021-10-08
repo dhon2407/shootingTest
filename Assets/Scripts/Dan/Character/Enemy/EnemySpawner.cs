@@ -134,6 +134,7 @@ namespace Dan.Character.Enemy
         private void GameEnds()
         {
             _gameStarted = false;
+            _spawning = false;
             _currentLevel = 1;
         }
 
