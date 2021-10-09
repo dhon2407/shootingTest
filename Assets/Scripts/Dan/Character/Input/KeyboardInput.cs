@@ -16,7 +16,7 @@ namespace Dan.Character.Input
             _currentMovement.x = UnityEngine.Input.GetAxis("Horizontal");
             _currentMovement.y = UnityEngine.Input.GetAxis("Vertical");
             
-            if (UnityEngine.Input.GetKey(KeyCode.Z))
+            if (UnityEngine.Input.GetKey(KeyCode.Z) || UnityEngine.Input.GetButton("Fire1"))
                 Fire?.Invoke();
             if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
                 Pause?.Invoke();
