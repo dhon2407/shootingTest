@@ -1,5 +1,4 @@
-﻿using System;
-using Dan.Manager;
+﻿using Dan.Manager;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +8,8 @@ namespace Dan.UI.HUD
     [RequireComponent(typeof(Text))]
     public class ScoreText : MonoBehaviour
     {
+        [SerializeField]
+        private LevelProgression levelProgression;
         public int Score
         {
             get => _currentValue;
@@ -39,6 +40,7 @@ namespace Dan.UI.HUD
         private void NewGameScore()
         {
             _currentValue = 0;
+            levelProgression.SetData(0);
             _score.text = $"Score {_currentValue:00000000}";
         }
 
@@ -46,6 +48,8 @@ namespace Dan.UI.HUD
         {
             transform.DOKill(true);
             transform.DOPunchScale(Vector3.one * .05f, .1f, 6, .68f);
+            
+            levelProgression.SetData(newScore);
             
             DOTween.To(() => oldScore, value => _score.text = $"Score {value:00000000}", newScore, 0.5f);
         }

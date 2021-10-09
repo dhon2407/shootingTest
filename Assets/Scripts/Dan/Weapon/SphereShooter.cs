@@ -20,6 +20,8 @@ namespace Dan.Weapon
         private float fireSpeed;
         [SerializeField]
         private int activationLevel = 1;
+        [SerializeField]
+        private bool invertFireDirection;
 
         public float FireSpeed => fireSpeed;
         public int ActivationLevel => activationLevel;
@@ -35,7 +37,7 @@ namespace Dan.Weapon
             var bullet = _bulletPool.GetObject();
             bullet.SetOwner(transform)
                 .SetRange(weaponRange);
-            bullet.Fire(transform.position, direction);
+            bullet.Fire(transform.position, direction * (invertFireDirection ? -1 : 1));
 
             StartCoroutine(StartCooldown());
         }

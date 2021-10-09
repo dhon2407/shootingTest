@@ -136,6 +136,7 @@ namespace Dan.Manager
                 levelIndicator.Show(_currentLevel);
                 OnLevelChange?.Invoke(_currentLevel);
             }
+            
         }
 
         private void ResetGame()

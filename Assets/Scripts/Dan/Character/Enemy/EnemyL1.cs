@@ -63,7 +63,8 @@ namespace Dan.Character.Enemy
             _weapon.ResetWeapon();
             while (gameObject.activeSelf && TargetPlayer != null)
             {
-                _weapon.Fire(transform.forward); 
+                if (OnViewableField)
+                    _weapon.Fire(transform.forward); 
                 yield return null;
             }
         }

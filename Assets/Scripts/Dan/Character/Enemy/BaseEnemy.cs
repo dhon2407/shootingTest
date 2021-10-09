@@ -29,6 +29,8 @@ namespace Dan.Character.Enemy
         public float MoveSpeed => moveSpeed;
         
         protected bool OutOfCamera { get; set; }
+        protected bool OnViewableField { get; private set; }
+
         protected Vector3 MoveDirection { get; set; }
 
         public event Action OnCharacterDeath;
@@ -144,7 +146,8 @@ namespace Dan.Character.Enemy
             if (!gameObject.activeSelf || maxHitPoints <= 0)
                 return;
 
-            if (isVisible)
+            OnViewableField = isVisible;
+            if (OnViewableField)
             {
                 if (_removeRoutine != null)
                     StopCoroutine(_removeRoutine);
