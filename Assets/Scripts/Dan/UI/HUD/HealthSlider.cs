@@ -37,6 +37,7 @@ namespace Dan.UI.HUD
         
         private void AnimateFill(float newLevel, float speed)
         {
+            slider.transform.DOShakePosition(0.3f, 1.5f, 20);
             DOTween.To(() => slider.value, value =>
             {
                 slider.value = value;

@@ -528,7 +528,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialMovementSpeed: 15
-  hitPoints: 10
+  hitPoints: 14
   cameraFocus: {fileID: 1575811406}
   explosionObj: {fileID: 1736425513783660746, guid: 7da75dee3f9260444b0e5b777d5a1462, type: 3}
   orbitingSpheres:

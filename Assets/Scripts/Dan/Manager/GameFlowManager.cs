@@ -110,6 +110,7 @@ namespace Dan.Manager
         
         private void UpdatePlayerHP()
         {
+            cameraFollow.Shake();
             healthSlider.SetValue( player.HitPoints / (float)player.MaxHitPoints);
         }
         
