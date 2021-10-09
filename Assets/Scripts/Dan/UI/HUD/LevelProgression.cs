@@ -25,10 +25,9 @@ namespace Dan.UI.HUD
         public void SetData(int newScore)
         {
             DOTween.Kill(this, true);
-            DOTween.To(() => _lastScore, value => UpdateScoreValue(value), newScore, 0.3f).OnComplete(() =>
-            {
-                _lastScore = newScore;
-            }).SetId(this);
+            DOTween.To(() => _lastScore, value => UpdateScoreValue(value), newScore, 0.3f)
+                .OnComplete(() => _lastScore = newScore)
+                .SetId(this);
         }
 
         private void UpdateScoreValue(float scoreUpdateValue)
